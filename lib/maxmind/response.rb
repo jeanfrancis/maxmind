@@ -27,12 +27,7 @@ module Maxmind
       response.split(';').each do |parameter|
         k, v = parameter.split('=')
 
-        puts v
-        puts "encoding #{v.encoding}" if v
         v = v.encode("UTF-8") if v
-        puts v
-        puts "encoding #{v.encoding}" if v
-        puts "-----------"
 
         case k
         when 'err'
