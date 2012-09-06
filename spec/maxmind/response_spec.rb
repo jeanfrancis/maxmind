@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 require 'spec_helper'
 
 REQUIRED_FIELDS =
@@ -15,10 +17,10 @@ describe Maxmind::Response do
     optional_fields = JSON.parse(load_fixture("optional_fields.json"))
     all_fields = required_fields.merge(recommended_fields).merge(optional_fields)
 
-    request = Maxmind::Request.new(all_fields)
+    @request = Maxmind::Request.new(all_fields)
     stub_request(:post, "https://minfraud2.maxmind.com/app/ccv2r").
       to_return(:body => load_fixture("response.txt"), :status => 200)
-    @response = request.process!
+    @response = @request.process!
   end
 
   it "requires a response" do
@@ -51,5 +53,16 @@ describe Maxmind::Response do
 
   it "has an explanation" do
     @response.explanation.should_not == nil
+  end
+
+  it "converts Latin1 encoding to UTF8" do
+    # Maxmind responds with ISO-8859-1 encoded data
+    stub_request(:post, "https://minfraud2.maxmind.com/app/ccv2r").
+      to_return(
+        :body => load_fixture("latin1_response.txt").force_encoding("ISO-8859-1"),
+        :status => 200
+      )
+    latin_response = @request.process!
+    latin_response.ip_city.should == "Nürnberg"
   end
 end
