@@ -12,7 +12,7 @@ Installation
 
 In your Gemfile;
 
-    gem 'maxmind', :git => 'git://github.com/tomblomfield/maxmind'
+    gem 'maxmind', :git => 'git://github.com/gocardless/maxmind.git'
 
 Tests
 ------------
