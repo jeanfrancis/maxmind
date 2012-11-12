@@ -27,7 +27,10 @@ module Maxmind
       response.split(';').each do |parameter|
         k, v = parameter.split('=')
 
-        v = v.encode("UTF-8") if v
+        # Interpret response as Latin-1 encoding and convert to
+        # UTF8. Without explicit encoding the response is interpreted
+        # as ASCII-8BIT.
+        v = v.encode("UTF-8", "ISO-8859-1") if v
 
         case k
         when 'err'
