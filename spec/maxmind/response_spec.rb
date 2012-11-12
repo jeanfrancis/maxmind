@@ -56,10 +56,10 @@ describe Maxmind::Response do
   end
 
   it "converts Latin1 encoding to UTF8" do
-    # Maxmind responds with ISO-8859-1 encoded data
+    # Maxmind responds with latin1 encoded data detected as ASCII-8bit
     stub_request(:post, "https://minfraud2.maxmind.com/app/ccv2r").
       to_return(
-        :body => load_fixture("latin1_response.txt").force_encoding("ISO-8859-1"),
+        :body => load_fixture("latin1_response.txt").force_encoding("ASCII-8BIT"),
         :status => 200
       )
     latin_response = @request.process!
